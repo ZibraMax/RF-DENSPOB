@@ -82,13 +82,12 @@
 
 		var layout = {
 			dragmode: "zoom",
-			mapbox: { style: "light", center: { lat: 4.610906217, lon: -74.1137885 }, zoom: 9.5 },
+			mapbox: { style: "open-street-map", center: { lat: 4.610906217, lon: -74.1137885 }, zoom: 9.5 },
 			margin: { r: 0, b: 0, l: 0 },
 			dragmode: 'lasso',
 			title: 'Map'
 		};
 		var config = {
-		    mapboxAccessToken: "pk.eyJ1IjoiemlicmFtYXgiLCJhIjoiY2toZXVvOGJmMG8ydDJ3dDllejllY25mdCJ9.SR3lpAJ10f-E4Vba1QIKIA",
 		    responsive:true,
 		  };
 		Plotly.newPlot("myDiv", data, layout,config);
