@@ -12,7 +12,7 @@
 <body style="margin: 20px">
 	<article class="card">
 		
-	<header>
+	<header style="text-align: center;">
 			<h2>The 3D component of a land-use change model for Bogotá: A random forest-based population density model</h2>
 			<br>
 			<div style="text-align: center;">
@@ -37,10 +37,9 @@
 		
 	</article>
 	<script type="text/javascript">
-		var color1 = '#7b3294';
-		var color1Light = '#c2a5cf';
-		var colorX = '#ffa7b5';
-		var colorY = '#fdae61';
+		function numberWithCommas(x,separator) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+		}
 		var layoutHistograma = {
 			title: 'Population Density Histogram',
 			xaxis: {
@@ -52,7 +51,7 @@
 		};
 
 		Plotly.d3.csv(
-	"https://raw.githubusercontent.com/ZibraMax/DATA_DENS_POB/master/kiti.csv",
+	"https://raw.githubusercontent.com/ZibraMax/RF-DENSPOB/master/kiti.csv",
 	function(err, rows) {
 		
 		function unpack(rows, key) {
@@ -67,7 +66,7 @@
 				text: unpack(rows, "Dens"),
 				lon: unpack(rows, "Lat"),
 				lat: unpack(rows, "Long"),
-				marker: { color: "fuchsia", size: 2 }
+				marker: { size: 2 }
 			}
 		];
 		var traceHistogramaDensidad = [{
@@ -76,9 +75,7 @@
 		    showlegend: false,
 		    xaxis: 'x',  
 		    yaxis: 'y',
-			 marker: {
-				 color: 'red'
-		}}];
+			}];
 
 		var layout = {
 			dragmode: "zoom",
@@ -97,7 +94,7 @@
 		 	pop+=DENSIDAD_original[i]*0.36
 		 }
 		 layoutHistograma = {
-			title: 'Population Density Histogram. Total Population='+Math.round(pop),
+			title: 'Population Density Histogram. Total Population='+numberWithCommas(Math.round(pop),'.'),
 			xaxis: {
 		  	title:'Population Density'
 		  },
@@ -110,14 +107,9 @@
 		var graphDiv = document.getElementById('myDiv');
 		graphDiv.on('plotly_selected', function(eventData) {
 		  var DENSIDADES = [];
-		  var colors = [];
-		  eventData.points.forEach(function(pt) {
-		  	colors.push('')
-		  });
 
 		  eventData.points.forEach(function(pt) {
 		  	DENSIDADES.push(parseFloat(pt.text));
-		    colors[pt.pointNumber] = color1;
 		  });
 		  console.log(eventData.points)
 		  var traceHistogramaDensidad = [{
@@ -126,15 +118,13 @@
 		    showlegend: false,
 		    xaxis: 'Densidad',  
 		    yaxis: 'Frecuencia',
-			 marker: {
-				 color: 'red'
-		}}];
+			}];
 		let pop = 0
 		 for (var i = 0; i < DENSIDADES.length; i++) {
 		 	pop+=DENSIDADES[i]*0.36
 		 }
 		 layoutHistograma = {
-			title: 'Population Density Histogram. Total Population='+Math.round(pop),
+			title: 'Population Density Histogram. Total Population='+numberWithCommas(Math.round(pop),'.'),
 			xaxis: {
 		  	title:'Population Density'
 		  },
@@ -144,7 +134,7 @@
 		};
 			Plotly.newPlot("graficas21", traceHistogramaDensidad,layoutHistograma);
 
-			  Plotly.restyle(graphDiv, 'marker.color', [colors]);
+			  Plotly.restyle(graphDiv);
 		})
 	}
 );
