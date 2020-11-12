@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kiti</title>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=0.5,user-scalable=no" id="viewport">
+	<link rel="stylesheet" href="https://unpkg.com/picnic">
+	<link rel="stylesheet" href="estilos.css">
+
+</head>
+<body style="margin: 20px">
+	<article class="card">
+		
+	<header>
+			<h1>RF - Population Density - Camacho et al.</h1>
+		</header>
+		<footer>
+			<div class="fila">
+				<div class="columnaMedios">
+					<div id="myDiv"></div>
+				</div>
+				<div class="columnaMedios">
+					<div id="graficas21">
+						
+					</div>
+					<div id="graficas22">
+						
+					</div>
+			</div>
+			</div>
+		</footer>
+		
+	</article>
+	<script type="text/javascript">
+		var color1 = '#7b3294';
+		var color1Light = '#c2a5cf';
+		var colorX = '#ffa7b5';
+		var colorY = '#fdae61';
+		var layoutHistograma = {
+			title: 'Population Density Histogram',
+			xaxis: {
+		  	title:'Population Density'
+		  },
+		  yaxis: {
+		  	title:'Frequency'
+		  }
+		};
+
+		Plotly.d3.csv(
+	"https://raw.githubusercontent.com/ZibraMax/DATA_DENS_POB/master/kiti.csv",
+	function(err, rows) {
+		
+		function unpack(rows, key) {
+			return rows.map(function(row) {
+				return row[key];
+			});
+		}
+
+		var data = [
+			{
+				type: "scattermapbox",
+				text: unpack(rows, "Dens"),
+				lon: unpack(rows, "Lat"),
+				lat: unpack(rows, "Long"),
+				marker: { color: "fuchsia", size: 2 }
+			}
+		];
+		var traceHistogramaDensidad = [{
+		    x: unpack(rows, "Dens"),
+		    type: 'histogram',
+		    showlegend: false,
+		    xaxis: 'x',  
+		    yaxis: 'y',
+			 marker: {
+				 color: 'red'
+		}}];
+
+		var layout = {
+			dragmode: "zoom",
+			mapbox: { style: "light", center: { lat: 4.610906217, lon: -74.1137885 }, zoom: 9.5 },
+			margin: { r: 0, t: 0, b: 0, l: 0 },
+			dragmode: 'lasso',
+			title: 'datos'
+		};
+		var config = {
+		    mapboxAccessToken: "pk.eyJ1IjoiemlicmFtYXgiLCJhIjoiY2toZXVvOGJmMG8ydDJ3dDllejllY25mdCJ9.SR3lpAJ10f-E4Vba1QIKIA",
+		    responsive:true,
+		  };
+		  let DENSIDAD_original = unpack(rows, "Dens")
+		  let pop = 0
+		 for (var i = 0; i < DENSIDAD_original.length; i++) {
+		 	pop+=DENSIDAD_original[i]*0.36
+		 }
+		 layoutHistograma = {
+			title: 'Population Density Histogram. Total Population='+Math.round(pop),
+			xaxis: {
+		  	title:'Population Density'
+		  },
+		  yaxis: {
+		  	title:'Frequency'
+		  }
+		};
+		Plotly.newPlot("myDiv", data, layout,config);
+		Plotly.newPlot("graficas21", traceHistogramaDensidad,layoutHistograma,{responsive:true});
+		var graphDiv = document.getElementById('myDiv');
+		graphDiv.on('plotly_selected', function(eventData) {
+		  var DENSIDADES = [];
+		  var colors = [];
+		  eventData.points.forEach(function(pt) {
+		  	colors.push('')
+		  });
+
+		  eventData.points.forEach(function(pt) {
+		  	DENSIDADES.push(parseFloat(pt.text));
+		    colors[pt.pointNumber] = color1;
+		  });
+		  console.log(eventData.points)
+		  var traceHistogramaDensidad = [{
+		    x: DENSIDADES,
+		    type: 'histogram',
+		    showlegend: false,
+		    xaxis: 'Densidad',  
+		    yaxis: 'Frecuencia',
+			 marker: {
+				 color: 'red'
+		}}];
+		let pop = 0
+		 for (var i = 0; i < DENSIDADES.length; i++) {
+		 	pop+=DENSIDADES[i]*0.36
+		 }
+		 layoutHistograma = {
+			title: 'Population Density Histogram. Total Population='+Math.round(pop),
+			xaxis: {
+		  	title:'Population Density'
+		  },
+		  yaxis: {
+		  	title:'Frequency'
+		  }
+		};
+			Plotly.newPlot("graficas21", traceHistogramaDensidad,layoutHistograma);
+
+			  Plotly.restyle(graphDiv, 'marker.color', [colors]);
+		})
+	}
+);
+	</script>
+</body>
+</html>
