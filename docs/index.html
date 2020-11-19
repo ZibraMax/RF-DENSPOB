@@ -55,7 +55,7 @@
 		};
 
 		Plotly.d3.csv(
-	"https://raw.githubusercontent.com/ZibraMax/RF-DENSPOB/master/kiti.csv",
+	"https://raw.githubusercontent.com/ZibraMax/RF-DENSPOB/master/kitiFinal.csv",
 	function(err, rows) {
 		
 		function unpack(rows, key) {
@@ -95,11 +95,60 @@
 			title: 'Map',
 			hovermode:false,
 		};
+
 		var config = {
 		    responsive:true,
 		  };
 		Plotly.newPlot("myDiv", data, layout,config);
 		Plotly.newPlot("graficas21", traceHistogramaDensidad,layoutHistograma,{responsive:true});
+
+		let DENSIDAD_originals2 = unpack(rows, "Dens2")
+		pop = 0
+		 for (var i = 0; i < DENSIDAD_originals2.length; i++) {
+		 	pop+=DENSIDAD_originals2[i]*0.36
+		 }
+		let dataHistograma= [{
+	    x: DENSIDAD_originals2,
+	    type: 'histogram',
+	    name: 'Scenario 2: (2050) - Pop: ' + Math.round(pop)
+		}]
+
+		var data = [
+			{
+				type: "scattermapbox",
+				text: DENSIDAD_originals2,
+				lon: unpack(rows, "Lat"),
+				lat: unpack(rows, "Long"),
+				marker: { size: 2 },
+				name: 'Scenario 2: Population Density (2050)'
+			}
+		];
+		Plotly.plot("myDiv", data);
+		Plotly.plot("graficas21", dataHistograma);
+
+		let DENSIDAD_originals2016 = unpack(rows, "Dens3")
+		pop = 0
+		 for (var i = 0; i < DENSIDAD_originals2016.length; i++) {
+		 	pop+=DENSIDAD_originals2016[i]*0.36
+		 }
+			dataHistograma= [{
+		    x: DENSIDAD_originals2016,
+		    type: 'histogram',
+		    name: 'Population Density (2016) - Pop: ' + Math.round(pop) 
+			}]
+			var data = [
+				{
+					type: "scattermapbox",
+					text: DENSIDAD_originals2016,
+					lon: unpack(rows, "Lat"),
+					lat: unpack(rows, "Long"),
+					marker: { size: 2 },
+					name: 'Population Density (2016)'
+				}
+			];
+			Plotly.plot("myDiv", data);
+			Plotly.plot("graficas21", dataHistograma);
+
 		var graphDiv = document.getElementById('myDiv');
 		graphDiv.on('plotly_selected', function(eventData) {
 		  var DENSIDADES = [];
@@ -152,67 +201,6 @@
 		})
 	}
 );
-	 Plotly.d3.csv("https://raw.githubusercontent.com/ZibraMax/RF-DENSPOB/master/kiti2.csv", function(err, rows) {
-		
-			function unpack(rows, key) {
-				return rows.map(function(row) {
-					return row[key];
-				});
-			}
-			let DENSIDAD_originals2 = unpack(rows, "Dens")
-			let pop = 0
-		 for (var i = 0; i < DENSIDAD_originals2.length; i++) {
-		 	pop+=DENSIDAD_originals2[i]*0.36
-		 }
-			let dataHistograma= [{
-		    x: DENSIDAD_originals2,
-		    type: 'histogram',
-		    name: 'Scenario 2: (2050) - Pop: ' + Math.round(pop)
-			}]
-
-			var data = [
-				{
-					type: "scattermapbox",
-					text: DENSIDAD_originals2,
-					lon: unpack(rows, "Lat"),
-					lat: unpack(rows, "Long"),
-					marker: { size: 2 },
-					name: 'Scenario 2: Population Density (2050)'
-				}
-			];
-			Plotly.plot("myDiv", data);
-			Plotly.plot("graficas21", dataHistograma);
-		});
-	 Plotly.d3.csv("https://raw.githubusercontent.com/ZibraMax/RF-DENSPOB/master/kiti2016.csv", function(err, rows) {
-		
-			function unpack(rows, key) {
-				return rows.map(function(row) {
-					return row[key];
-				});
-			}
-			let DENSIDAD_originals2016 = unpack(rows, "Dens")
-			let pop = 0
-		 for (var i = 0; i < DENSIDAD_originals2016.length; i++) {
-		 	pop+=DENSIDAD_originals2016[i]*0.36
-		 }
-			let dataHistograma= [{
-		    x: DENSIDAD_originals2016,
-		    type: 'histogram',
-		    name: 'Population Density (2016) - Pop: ' + Math.round(pop) 
-			}]
-			var data = [
-				{
-					type: "scattermapbox",
-					text: DENSIDAD_originals2016,
-					lon: unpack(rows, "Lat"),
-					lat: unpack(rows, "Long"),
-					marker: { size: 2 },
-					name: 'Population Density (2016)'
-				}
-			];
-			Plotly.plot("myDiv", data);
-			Plotly.plot("graficas21", dataHistograma);
-		});
-	</script>
+</script>
 </body>
 </html>
