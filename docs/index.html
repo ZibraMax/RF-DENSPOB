@@ -19,6 +19,7 @@
 				<a href="#">Paper avaliable here</a>
 			</div>
 			<div>
+				<p>In the first map you can see the results in 3D, and the second map allows you to calculate population using lasso</p>
 				<p>How to use: Select with lasso around the scatter points in the map to see sub-distributions of population density<p>
 				<p>You can use all the available tools for zoom, download and hover to see date with more detail<p>
 			</div>
@@ -71,7 +72,7 @@
 				lon: unpack(rows, "Lat"),
 				lat: unpack(rows, "Long"),
 				marker: { size: 2 },
-				name: 'Scenario 1'
+				name: 'Scenario 1: Population Density (2050)'
 			}
 		];
 		  let pop = 0
@@ -109,10 +110,10 @@
 		  let pop2 = 0
 		  let pop2016 = 0
 		  eventData.points.forEach(function(pt) {
-		  	if (pt.fullData.name=='Scenario 1') {
+		  	if (pt.fullData.name=='Scenario 1: Population Density (2050)') {
 		  		DENSIDADES_s1.push(parseFloat(pt.text))
 			 	pop1+=parseFloat(pt.text)*0.36
-		  	} else if (pt.fullData.name=='Scenario 2') {
+		  	} else if (pt.fullData.name=='Scenario 2: Population Density (2050)') {
 			 	pop2+=parseFloat(pt.text)*0.36
 		  		DENSIDADES_s2.push(parseFloat(pt.text))
 		  	} else {
@@ -176,7 +177,7 @@
 					lon: unpack(rows, "Lat"),
 					lat: unpack(rows, "Long"),
 					marker: { size: 2 },
-					name: 'Scenario 2'
+					name: 'Scenario 2: Population Density (2050)'
 				}
 			];
 			Plotly.plot("myDiv", data);
@@ -206,7 +207,7 @@
 					lon: unpack(rows, "Lat"),
 					lat: unpack(rows, "Long"),
 					marker: { size: 2 },
-					name: '2016'
+					name: 'Population Density (2016)'
 				}
 			];
 			Plotly.plot("myDiv", data);
