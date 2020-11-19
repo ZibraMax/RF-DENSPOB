@@ -159,15 +159,18 @@
 		  let pop2 = 0
 		  let pop2016 = 0
 		  eventData.points.forEach(function(pt) {
-		  	if (pt.fullData.name=='Scenario 1: Population Density (2050)') {
-		  		DENSIDADES_s1.push(parseFloat(pt.text))
-			 	pop1+=parseFloat(pt.text)*0.36
-		  	} else if (pt.fullData.name=='Scenario 2: Population Density (2050)') {
-			 	pop2+=parseFloat(pt.text)*0.36
-		  		DENSIDADES_s2.push(parseFloat(pt.text))
-		  	} else {
-		  		DENSIDADES_s2016.push(parseFloat(pt.text))
-			 	pop2016+=parseFloat(pt.text)*0.36
+		  	let numeroDensidad = parseFloat(pt.text)
+		  	if (numeroDensidad) {
+			  	if (pt.fullData.name=='Scenario 1: Population Density (2050)') {
+			  		DENSIDADES_s1.push(numeroDensidad)
+				 	pop1+=numeroDensidad*0.36
+			  	} else if (pt.fullData.name=='Scenario 2: Population Density (2050)') {
+				 	pop2+=numeroDensidad*0.36
+			  		DENSIDADES_s2.push(numeroDensidad)
+			  	} else {
+			  		DENSIDADES_s2016.push(numeroDensidad)
+				 	pop2016+=numeroDensidad*0.36
+			  	}
 		  	}
 		  });
 		  var traceHistogramaDensidad = [{
